@@ -127,15 +127,15 @@ export const Timer: FC = () => {
     );
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen rounded-lg p-8">
+        <div className="flex flex-col items-center justify-center rounded-lg p-12 bg-gray-400">
             {/* Tabs */}
             <div className="flex mb-4 space-x-4">
                 {tabs.map((tab) => (
                     <div
                         key={tab}
-                        className={`p-4 cursor-pointer rounded-lg text-white text-xl ${currentTab === tab
-                            ? "bg-blue-700"
-                            : "bg-blue-500 hover:bg-blue-600"
+                        className={`p-4 cursor-pointer rounded-lg text-xl ${currentTab === tab
+                            ? "bg-purple-300 text-white"
+                            : "bg-purple-200 hover:bg-purple-100 text-purple-900"
                             }`}
                         onClick={() => changeTab(tab)}
                     >
@@ -145,11 +145,11 @@ export const Timer: FC = () => {
             </div>
 
             {/* Iteration number */}
-            <div className="mb-4 text-lg text-gray-800">{`Iteration #${iterationCount}`}</div>
+            <div className="mb-4 text-xl text-gray-800">{`Iteration #${iterationCount}`}</div>
 
             {/* Timer */}
             <motion.div
-                className="text-6xl font-bold mb-4 text-blue-800"
+                className="text-6xl font-bold mb-4 text-purple-800"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -159,12 +159,18 @@ export const Timer: FC = () => {
 
             {/* Buttons */}
             <div className="flex space-x-4">
-                <button className="py-2 px-6 rounded-full bg-blue-700 text-white text-xl hover:bg-blue-800" onClick={startStop}>
+                <button className="py-2 px-6 rounded-full bg-purple-700 text-white text-xl hover:bg-purple-600" onClick={startStop}>
                     Start/Stop
                 </button>
-                <button className="py-2 px-6 rounded-full bg-blue-500 text-white text-xl hover:bg-blue-600" onClick={next}>Skip</button>
+                <button className="py-2 px-6 rounded-full bg-purple-500 text-white text-xl hover:bg-purple-400" onClick={next}>Skip</button>
             </div>
         </div>
+
+
+
+
+
+
     );
 }
 
