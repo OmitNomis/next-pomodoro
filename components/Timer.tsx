@@ -4,7 +4,12 @@ import { motion } from "framer-motion";
 
 type SessionTypeProp = "work" | "break" | "longBreak";
 type tabsProp = "Work" | "Break" | "Long Break";
-export const Timer: FC = () => {
+
+interface TimerProps {
+  isRunning: boolean;
+  setIsRunning: (isRunning: boolean) => void;
+}
+export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
   // get from local storage later
   const initialValues = {
     workTime: 25 * 60,
@@ -15,7 +20,6 @@ export const Timer: FC = () => {
   const tabs = ["Work", "Break", "Long Break"];
   const [currentTab, setCurrentTab] = useState("Work");
   const [currentTime, setCurrentTime] = useState(initialValues.workTime);
-  const [isRunning, setIsRunning] = useState(false);
   const [sessionType, setSessionType] = useState<SessionTypeProp>("work");
   const [iterationCount, setIterationCount] = useState(1);
 
@@ -113,19 +117,21 @@ export const Timer: FC = () => {
   }, [isRunning, sessionType, iterationCount]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100">
+    <div className="flex flex-col items-center">
       <div className="bg-white rounded-lg shadow-lg w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 p-8">
         {/* Tabs */}
         <div className="flex flex-wrap justify-center space-x-4 mb-6">
           {tabs.map((tab) => (
             <div
               key={tab}
-              className={`p-2 sm:p-4 cursor-pointer text-lg sm:text-xl rounded-md ${
+              className={`flex-1 p-2 sm:p-4 cursor-pointer text-lg sm:text-xl rounded-md text-center ${
                 currentTab === tab
                   ? "bg-purple-600 text-white"
                   : "bg-purple-200 hover:bg-purple-300 text-purple-900"
               }`}
-              onClick={() => changeTab(tab)}>
+              onClick={() => changeTab(tab)}
+              style={{ minHeight: "3rem" }} // Set a minimum height for tabs
+            >
               {tab}
             </div>
           ))}
@@ -136,25 +142,29 @@ export const Timer: FC = () => {
           <div className="text-2xl sm:text-3xl text-gray-800">{`Iteration #${iterationCount}`}</div>
 
           {/* Timer */}
-          <motion.div
-            className="text-4xl sm:text-5xl font-bold text-purple-600"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}>
+          <div className="text-6xl sm:text-8xl font-bold text-purple-600">
             {formatTime(currentTime)}
-          </motion.div>
+          </div>
 
           {/* Buttons */}
           <div className="flex space-x-4">
             <button
-              className="px-6 py-3 bg-purple-700 text-white rounded-full text-lg sm:text-xl hover:bg-purple-600"
-              onClick={startStop}>
-              Start/Stop
+              className="px-8 py-3 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              onClick={startStop}
+              style={{ width: "10rem" }} // Increase button width
+            >
+              <motion.div initial={{ scale: 1 }} whileTap={{ scale: 0.95 }}>
+                {isRunning ? "Stop" : "Start"}
+              </motion.div>
             </button>
             <button
-              className="px-6 py-3 bg-purple-500 text-white rounded-full text-lg sm:text-xl hover:bg-purple-400"
-              onClick={next}>
-              Skip
+              className="px-8 py-3 bg-purple-500 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              onClick={next}
+              style={{ width: "10rem" }} // Increase button width
+            >
+              <motion.div initial={{ scale: 1 }} whileTap={{ scale: 0.95 }}>
+                Skip
+              </motion.div>
             </button>
           </div>
         </div>
