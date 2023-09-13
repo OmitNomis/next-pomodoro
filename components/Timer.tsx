@@ -16,12 +16,12 @@ export const Timer: FC<TimerProps> = ({
   setIsRunning,
   changeRunState,
 }) => {
-  // get from local storage later
+  const storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
   const initialValues = {
-    workTime: 25 * 60,
-    breakTime: 2,
-    longBreakTime: 3,
-    breakAfter: 4,
+    workTime: storedSettings.workDuration || 25 * 60,
+    breakTime: storedSettings.breakDuration || 2,
+    longBreakTime: storedSettings.longBreakDuration || 3,
+    breakAfter: storedSettings.longBreakAfter || 4,
   };
   const tabs = ["Work", "Break", "Long Break"];
   const [currentTab, setCurrentTab] = useState("Work");

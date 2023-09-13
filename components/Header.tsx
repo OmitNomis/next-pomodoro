@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
 import { CustomModal } from "./modal/CustomModal";
+import { SettingsModal } from "./modal/SettingsModal";
 
 interface HeaderProps {
   canReset: () => boolean;
@@ -21,14 +22,8 @@ export const Header: FC<HeaderProps> = ({ canReset }) => {
     window.location.href = "/";
   };
 
-  const handleResetClick = () => {
-    // Implement your reset logic here
-    console.log("Reset button clicked!");
-  };
-
   const handleSettingsClick = () => {
-    // Implement your settings logic here
-    console.log("Settings button clicked!");
+    setShowSettings(true);
   };
 
   return (
@@ -57,6 +52,10 @@ export const Header: FC<HeaderProps> = ({ canReset }) => {
         onClose={() => setAlertModalVisible(false)}
         title="Are you sure you want to reload?"
         content="Your current progress will be lost."
+      />
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
       />
     </>
   );

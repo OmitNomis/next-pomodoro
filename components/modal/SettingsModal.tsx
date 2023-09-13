@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { FC, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SettingsModalProps {
@@ -7,32 +7,17 @@ interface SettingsModalProps {
 }
 
 export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
+  const storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
   const [settings, setSettings] = useState({
-    workDuration: 25,
-    breakDuration: 5,
-    longBreakDuration: 15,
-    longBreakAfter: 4,
+    workDuration: storedSettings.workDuration || "",
+    breakDuration: storedSettings.breakDuration || "",
+    longBreakDuration: storedSettings.longBreakDuration || "",
+    longBreakAfter: storedSettings.longBreakAfter || "",
   });
 
-  const onSave = (newSettings) => {
-    setSettings(newSettings);
-  };
-
-  const [workDuration, setWorkDuration] = useState(settings.workDuration);
-  const [breakDuration, setBreakDuration] = useState(settings.breakDuration);
-  const [longBreakDuration, setLongBreakDuration] = useState(
-    settings.longBreakDuration
-  );
-  const [longBreakAfter, setLongBreakAfter] = useState(settings.longBreakAfter);
-
   const handleSave = () => {
-    const newSettings = {
-      workDuration,
-      breakDuration,
-      longBreakDuration,
-      longBreakAfter,
-    };
-    onSave(newSettings);
+    // Save settings as a single JSON object to local storage
+    localStorage.setItem("settings", JSON.stringify(settings));
     onClose();
   };
 
@@ -57,9 +42,15 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   type="number"
+                  placeholder="25"
                   className="w-full px-3 py-2 border rounded-lg"
-                  value={workDuration}
-                  onChange={(e) => setWorkDuration(e.target.value)}
+                  value={settings.workDuration}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      workDuration: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-4">
@@ -67,10 +58,16 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                   Break Duration (minutes):
                 </label>
                 <input
+                  placeholder="5"
                   type="number"
                   className="w-full px-3 py-2 border rounded-lg"
-                  value={breakDuration}
-                  onChange={(e) => setBreakDuration(e.target.value)}
+                  value={settings.breakDuration}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      breakDuration: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-4">
@@ -78,10 +75,16 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                   Long Break Duration (minutes):
                 </label>
                 <input
+                  placeholder="15"
                   type="number"
                   className="w-full px-3 py-2 border rounded-lg"
-                  value={longBreakDuration}
-                  onChange={(e) => setLongBreakDuration(e.target.value)}
+                  value={settings.longBreakDuration}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      longBreakDuration: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-4">
@@ -89,10 +92,16 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                   Long Break After (iterations):
                 </label>
                 <input
+                  placeholder="4"
                   type="number"
                   className="w-full px-3 py-2 border rounded-lg"
-                  value={longBreakAfter}
-                  onChange={(e) => setLongBreakAfter(e.target.value)}
+                  value={settings.longBreakAfter}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      longBreakAfter: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -114,5 +123,3 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     </AnimatePresence>
   );
 };
-
-export default SettingsModal;
