@@ -133,7 +133,7 @@ export const Timer: FC<TimerProps> = ({
           if (prevTime > 0) {
             return prevTime - 1;
           } else {
-            next();
+            switchTab(next());
             return prevTime;
           }
         });
