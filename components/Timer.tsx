@@ -18,9 +18,9 @@ export const Timer: FC<TimerProps> = ({
 }) => {
   const storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
   const initialValues = {
-    workTime: storedSettings.workDuration || 25 * 60,
-    breakTime: storedSettings.breakDuration || 2,
-    longBreakTime: storedSettings.longBreakDuration || 3,
+    workTime: storedSettings.workDuration * 60 || 25 * 60,
+    breakTime: storedSettings.breakDuration * 60 || 5 * 60,
+    longBreakTime: storedSettings.longBreakDuration * 60 || 15 * 60,
     breakAfter: storedSettings.longBreakAfter || 4,
   };
   const tabs = ["Work", "Break", "Long Break"];
@@ -29,7 +29,7 @@ export const Timer: FC<TimerProps> = ({
   const [sessionType, setSessionType] = useState<SessionTypeProp>("work");
   const [iterationCount, setIterationCount] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
-  const [switchTo, setSwitchTo] = useState<tabsProp>();
+  const [switchTo, setSwitchTo] = useState<tabsProp>("Work");
 
   useEffect(() => {
     if (isRunning) {
@@ -98,24 +98,27 @@ export const Timer: FC<TimerProps> = ({
   };
 
   const changeTab = (tab: tabsProp) => {
-    setSwitchTo(tab);
     if (isRunning) {
       setShowAlert(true);
-      return;
+      setSwitchTo(tab); // Store the tab to switch to
+    } else {
+      switchTab(tab);
     }
-    confirmSwitchTab();
   };
 
-  const confirmSwitchTab = () => {
-    if (switchTo === "Work") {
+  const switchTab = (tab: tabsProp) => {
+    if (tab === "Work") {
       switchToWork();
-    } else if (switchTo === "Break") {
+    } else if (tab === "Break") {
       switchToBreak();
     } else {
       switchToLongBreak();
     }
+  };
+
+  const confirmSwitchTab = () => {
+    switchTab(switchTo); // Use the stored tab to switch
     setIsRunning(false);
-    setSwitchTo(undefined);
     setShowAlert(false);
   };
 

@@ -16,7 +16,6 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   });
 
   const handleSave = () => {
-    // Save settings as a single JSON object to local storage
     localStorage.setItem("settings", JSON.stringify(settings));
     onClose();
   };
