@@ -1,9 +1,11 @@
-import { Timer } from "@/components/Timer"
+import { Timer } from "@/components/Timer";
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
-    <main className="flex justify-center items-center h-screen bg-gray-600">
+    <main className="flex flex-col h-screen w-screen bg-pink-200">
+      <Header />
       <Timer />
     </main>
-  )
+  );
 }
