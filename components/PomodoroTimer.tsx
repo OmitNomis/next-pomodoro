@@ -22,11 +22,13 @@ export default function PomodoroTimer() {
   return (
     <>
       <Header canReset={canReset} />
-      <Timer
-        isRunning={isRunning}
-        setIsRunning={setIsRunning}
-        changeRunState={handleRunState}
-      />
+      <div className="mt-5 sm:mt-10">
+        <Timer
+          isRunning={isRunning}
+          setIsRunning={setIsRunning}
+          changeRunState={handleRunState}
+        />
+      </div>
     </>
   );
 }

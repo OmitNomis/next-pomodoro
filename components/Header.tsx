@@ -7,8 +7,7 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = ({ canReset }) => {
   const [alertModalVisible, setAlertModalVisible] = useState(false);
-
-  console.log(canReset);
+  const [showSettings, setShowSettings] = useState(false);
 
   const onLogoClick = () => {
     if (canReset()) {
@@ -33,20 +32,15 @@ export const Header: FC<HeaderProps> = ({ canReset }) => {
   };
 
   return (
-    <div className="flex w-full justify-between items-center mb-8 mt-8 bg-red-500">
-      <div className="w-[90%] sm:w-[60%] md:w-[50%] bg-black ">
-        <div className="flex justify-around">
-          <h1
-            onClick={onLogoClick}
-            className="text-3xl sm:text-3xl md:text-5xl font-bold text-pink-900 cursor-pointer">
-            Pomodoro
-          </h1>
-          <div className="flex space-x-4">
-            <button
-              className="px-4 py-2 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              onClick={handleResetClick}>
-              Reset
-            </button>
+    <>
+      <div className="flex w-full justify-center items-center mb-8 mt-8">
+        <div className="w-[90%] sm:w-[60%] md:w-[50%">
+          <div className="flex justify-around">
+            <h1
+              onClick={onLogoClick}
+              className="text-3xl sm:text-3xl md:text-5xl font-bold text-pink-900 cursor-pointer">
+              Pomodoro
+            </h1>
             <button
               className="px-4 py-2 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600"
               onClick={handleSettingsClick}>
@@ -55,7 +49,6 @@ export const Header: FC<HeaderProps> = ({ canReset }) => {
           </div>
         </div>
       </div>
-
       <CustomModal
         isOpen={alertModalVisible}
         onAction={() => {
@@ -65,6 +58,6 @@ export const Header: FC<HeaderProps> = ({ canReset }) => {
         title="Are you sure you want to reload?"
         content="Your current progress will be lost."
       />
-    </div>
+    </>
   );
 };
