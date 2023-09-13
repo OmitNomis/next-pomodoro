@@ -17,7 +17,7 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 
   const handleSave = () => {
     localStorage.setItem("settings", JSON.stringify(settings));
-    onClose();
+    window.location.href = "/";
   };
 
   return (
@@ -44,6 +44,7 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                   placeholder="25"
                   className="w-full px-3 py-2 border rounded-lg"
                   value={settings.workDuration}
+                  step={1}
                   onChange={(e) =>
                     setSettings({
                       ...settings,

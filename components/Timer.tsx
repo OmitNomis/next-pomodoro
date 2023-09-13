@@ -16,7 +16,9 @@ export const Timer: FC<TimerProps> = ({
   setIsRunning,
   changeRunState,
 }) => {
-  const storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
+  const [storedSettings, setStoredSettings] = useState(
+    JSON.parse(localStorage.getItem("settings")) || {}
+  );
   const initialValues = {
     workTime: storedSettings.workDuration * 60 || 25 * 60,
     breakTime: storedSettings.breakDuration * 60 || 5 * 60,
@@ -31,6 +33,36 @@ export const Timer: FC<TimerProps> = ({
   const [showAlert, setShowAlert] = useState(false);
   const [switchTo, setSwitchTo] = useState<tabsProp>("Work");
 
+  // Refresh timer when settings change
+  useEffect(() => {
+    const storedSettingsFromLocalStorage = JSON.parse(
+      localStorage.getItem("settings")
+    );
+
+    // Check if settings have changed
+    if (
+      JSON.stringify(storedSettingsFromLocalStorage) !==
+      JSON.stringify(storedSettings)
+    ) {
+      // Update the settings in the component state
+      setStoredSettings(storedSettingsFromLocalStorage);
+
+      // Reset the timer based on the new settings
+      if (sessionType === "work") {
+        setCurrentTime(
+          storedSettingsFromLocalStorage.workDuration * 60 || 25 * 60
+        );
+      } else if (sessionType === "break") {
+        setCurrentTime(
+          storedSettingsFromLocalStorage.breakDuration * 60 || 5 * 60
+        );
+      } else if (sessionType === "longBreak") {
+        setCurrentTime(
+          storedSettingsFromLocalStorage.longBreakDuration * 60 || 15 * 60
+        );
+      }
+    }
+  }, [storedSettings, sessionType]);
   useEffect(() => {
     if (isRunning) {
       changeRunState();
