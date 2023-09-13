@@ -5,7 +5,9 @@ interface CustomModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  content: React.ReactNode | string;
+  content: string;
+  actionText?: string;
+  onAction: () => void;
 }
 
 export const CustomModal: FC<CustomModalProps> = ({
@@ -13,6 +15,8 @@ export const CustomModal: FC<CustomModalProps> = ({
   onClose,
   title,
   content,
+  actionText = "Yes",
+  onAction,
 }) => {
   return (
     <AnimatePresence>
@@ -29,9 +33,14 @@ export const CustomModal: FC<CustomModalProps> = ({
             className="bg-white rounded-lg shadow-lg w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 p-8">
             <div className="text-2xl sm:text-3xl text-gray-800">{title}</div>
             <div className="mt-4">{content}</div>
-            <div className="mt-4 flex justify-end">
+            <div className="mt-6 flex justify-end">
               <button
-                className="px-4 py-2 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                className="px-4 py-2 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 mr-4 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                onClick={onAction}>
+                {actionText}
+              </button>
+              <button
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg text-lg sm:text-xl hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 onClick={onClose}>
                 Close
               </button>

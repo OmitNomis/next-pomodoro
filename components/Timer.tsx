@@ -61,20 +61,26 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
     }
   };
   const switchToLongBreak = () => {
-    setSessionType("longBreak");
-    setCurrentTime(initialValues.longBreakTime);
-    setCurrentTab("Long Break");
+    if (sessionType !== "longBreak") {
+      setSessionType("longBreak");
+      setCurrentTime(initialValues.longBreakTime);
+      setCurrentTab("Long Break");
+    }
   };
   const switchToBreak = () => {
-    setSessionType("break");
-    setCurrentTime(initialValues.breakTime);
-    setCurrentTab("Break");
+    if (sessionType !== "break") {
+      setSessionType("break");
+      setCurrentTime(initialValues.breakTime);
+      setCurrentTab("Break");
+    }
   };
   const switchToWork = () => {
-    setSessionType("work");
-    setIterationCount((prevState) => prevState + 1);
-    setCurrentTime(initialValues.workTime);
-    setCurrentTab("Work");
+    if (sessionType !== "work") {
+      setSessionType("work");
+      setIterationCount((prevState) => prevState + 1);
+      setCurrentTime(initialValues.workTime);
+      setCurrentTab("Work");
+    }
   };
 
   const changeTab = (tab: tabsProp) => {
@@ -138,11 +144,9 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
         </div>
 
         <div className="flex flex-col items-center space-y-4">
-          {/* Iteration number */}
-          <div className="text-2xl sm:text-3xl text-gray-800">{`Iteration #${iterationCount}`}</div>
-
           {/* Timer */}
-          <div className="text-6xl sm:text-8xl font-bold text-purple-600">
+
+          <div className="text-6xl sm:text-8xl font-bold text-purple-600 pt-4 pb-4 md:pt-8 md:pb-8  ">
             {formatTime(currentTime)}
           </div>
 
@@ -151,8 +155,7 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
             <button
               className="px-8 py-3 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600"
               onClick={startStop}
-              style={{ width: "10rem" }} // Increase button width
-            >
+              style={{ width: "10rem" }}>
               <motion.div initial={{ scale: 1 }} whileTap={{ scale: 0.95 }}>
                 {isRunning ? "Stop" : "Start"}
               </motion.div>
@@ -160,8 +163,7 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
             <button
               className="px-8 py-3 bg-purple-500 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
               onClick={next}
-              style={{ width: "10rem" }} // Increase button width
-            >
+              style={{ width: "10rem" }}>
               <motion.div initial={{ scale: 1 }} whileTap={{ scale: 0.95 }}>
                 Skip
               </motion.div>

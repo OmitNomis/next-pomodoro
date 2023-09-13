@@ -9,7 +9,7 @@ export default function PomodoroTimer() {
 
   return (
     <>
-      <Header isRunning />
+      <Header isRunning={isRunning} />
       <Timer isRunning={isRunning} setIsRunning={setIsRunning} />
     </>
   );
