@@ -9,8 +9,13 @@ type tabsProp = "Work" | "Break" | "Long Break";
 interface TimerProps {
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
+  changeRunState: () => void;
 }
-export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
+export const Timer: FC<TimerProps> = ({
+  isRunning,
+  setIsRunning,
+  changeRunState,
+}) => {
   // get from local storage later
   const initialValues = {
     workTime: 25 * 60,
@@ -25,6 +30,12 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
   const [iterationCount, setIterationCount] = useState(1);
   const [showAlert, setShowAlert] = useState(false);
   const [switchTo, setSwitchTo] = useState<tabsProp>();
+
+  useEffect(() => {
+    if (isRunning) {
+      changeRunState();
+    }
+  }, [isRunning]);
 
   const startStop = () => {
     setIsRunning((prevState) => !prevState);
