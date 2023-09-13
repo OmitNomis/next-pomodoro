@@ -1,6 +1,7 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { CustomModal } from "./modal/CustomModal";
 
 type SessionTypeProp = "work" | "break" | "longBreak";
 type tabsProp = "Work" | "Break" | "Long Break";
@@ -22,6 +23,8 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
   const [currentTime, setCurrentTime] = useState(initialValues.workTime);
   const [sessionType, setSessionType] = useState<SessionTypeProp>("work");
   const [iterationCount, setIterationCount] = useState(1);
+  const [showAlert, setShowAlert] = useState(false);
+  const [switchTo, setSwitchTo] = useState<tabsProp>();
 
   const startStop = () => {
     setIsRunning((prevState) => !prevState);
@@ -84,14 +87,25 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
   };
 
   const changeTab = (tab: tabsProp) => {
-    setCurrentTab(tab);
-    if (tab === "Work") {
+    setSwitchTo(tab);
+    if (isRunning) {
+      setShowAlert(true);
+      return;
+    }
+    confirmSwitchTab();
+  };
+
+  const confirmSwitchTab = () => {
+    if (switchTo === "Work") {
       switchToWork();
-    } else if (tab === "Break") {
+    } else if (switchTo === "Break") {
       switchToBreak();
     } else {
       switchToLongBreak();
     }
+    setIsRunning(false);
+    setSwitchTo(undefined);
+    setShowAlert(false);
   };
 
   const next = () => {
@@ -170,6 +184,13 @@ export const Timer: FC<TimerProps> = ({ isRunning, setIsRunning }) => {
             </button>
           </div>
         </div>
+        <CustomModal
+          isOpen={showAlert}
+          onAction={confirmSwitchTab}
+          onClose={() => setShowAlert(false)}
+          title="Are you sure you want to skip?"
+          content="Your current progress will be lost."
+        />
       </div>
     </div>
   );

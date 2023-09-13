@@ -1,5 +1,3 @@
-import { Timer } from "@/components/Timer";
-import Header from "@/components/Header";
 import PomodoroTimer from "@/components/PomodoroTimer";
 
 export default function Home() {
