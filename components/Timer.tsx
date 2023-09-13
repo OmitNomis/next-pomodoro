@@ -16,9 +16,8 @@ export const Timer: FC<TimerProps> = ({
   setIsRunning,
   changeRunState,
 }) => {
-  const [storedSettings, setStoredSettings] = useState(
-    JSON.parse(localStorage.getItem("settings")) || {}
-  );
+  let storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
+
   const initialValues = {
     workTime: storedSettings.workDuration * 60 || 25 * 60,
     breakTime: storedSettings.breakDuration * 60 || 5 * 60,
@@ -33,36 +32,6 @@ export const Timer: FC<TimerProps> = ({
   const [showAlert, setShowAlert] = useState(false);
   const [switchTo, setSwitchTo] = useState<tabsProp>("Work");
 
-  // Refresh timer when settings change
-  useEffect(() => {
-    const storedSettingsFromLocalStorage = JSON.parse(
-      localStorage.getItem("settings")
-    );
-
-    // Check if settings have changed
-    if (
-      JSON.stringify(storedSettingsFromLocalStorage) !==
-      JSON.stringify(storedSettings)
-    ) {
-      // Update the settings in the component state
-      setStoredSettings(storedSettingsFromLocalStorage);
-
-      // Reset the timer based on the new settings
-      if (sessionType === "work") {
-        setCurrentTime(
-          storedSettingsFromLocalStorage.workDuration * 60 || 25 * 60
-        );
-      } else if (sessionType === "break") {
-        setCurrentTime(
-          storedSettingsFromLocalStorage.breakDuration * 60 || 5 * 60
-        );
-      } else if (sessionType === "longBreak") {
-        setCurrentTime(
-          storedSettingsFromLocalStorage.longBreakDuration * 60 || 15 * 60
-        );
-      }
-    }
-  }, [storedSettings, sessionType]);
   useEffect(() => {
     if (isRunning) {
       changeRunState();
@@ -95,17 +64,6 @@ export const Timer: FC<TimerProps> = ({
       ? `${minutes}:${seconds}`
       : `${hours}:${minutes}:${seconds}`;
   };
-
-  const changeSessionType = (type: SessionTypeProp) => {
-    setSessionType(type);
-    if (type === "break") {
-      switchToBreak();
-    } else if (type === "longBreak") {
-      switchToLongBreak();
-    } else {
-      switchToWork();
-    }
-  };
   const switchToLongBreak = () => {
     if (sessionType !== "longBreak") {
       setSessionType("longBreak");
@@ -132,7 +90,7 @@ export const Timer: FC<TimerProps> = ({
   const changeTab = (tab: tabsProp) => {
     if (isRunning) {
       setShowAlert(true);
-      setSwitchTo(tab); // Store the tab to switch to
+      setSwitchTo(tab);
     } else {
       switchTab(tab);
     }
@@ -149,7 +107,7 @@ export const Timer: FC<TimerProps> = ({
   };
 
   const confirmSwitchTab = () => {
-    switchTab(switchTo); // Use the stored tab to switch
+    switchTab(switchTo);
     setIsRunning(false);
     setShowAlert(false);
   };
@@ -157,11 +115,13 @@ export const Timer: FC<TimerProps> = ({
   const next = () => {
     setIsRunning(false);
     if (sessionType === "work") {
-      isLongBreak()
-        ? changeSessionType("longBreak")
-        : changeSessionType("break");
+      if (isLongBreak()) {
+        return "Long Break";
+      } else {
+        return "Break";
+      }
     } else {
-      changeSessionType("work");
+      return "Work";
     }
   };
 
@@ -196,21 +156,17 @@ export const Timer: FC<TimerProps> = ({
                   : "bg-purple-200 hover:bg-purple-300 text-purple-900"
               }`}
               onClick={() => changeTab(tab)}
-              style={{ minHeight: "3rem" }} // Set a minimum height for tabs
-            >
+              style={{ minHeight: "3rem" }}>
               {tab}
             </div>
           ))}
         </div>
 
         <div className="flex flex-col items-center space-y-4">
-          {/* Timer */}
-
           <div className="text-6xl sm:text-8xl font-bold text-purple-600 pt-4 pb-4 md:pt-8 md:pb-8  ">
             {formatTime(currentTime)}
           </div>
 
-          {/* Buttons */}
           <div className="flex space-x-4">
             <button
               className="px-8 py-3 bg-purple-700 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-600"
@@ -222,7 +178,7 @@ export const Timer: FC<TimerProps> = ({
             </button>
             <button
               className="px-8 py-3 bg-purple-500 text-white rounded-lg text-lg sm:text-xl hover:bg-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              onClick={next}
+              onClick={() => changeTab(next())}
               style={{ width: "10rem" }}>
               <motion.div initial={{ scale: 1 }} whileTap={{ scale: 0.95 }}>
                 Skip
