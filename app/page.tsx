@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 
 export default function Home() {
   return (
-    <main className="flex flex-col h-screen w-screen bg-pink-200">
+    <main className="flex flex-col h-screen w-screen bg-gray-100">
       <Header />
       <Timer />
     </main>

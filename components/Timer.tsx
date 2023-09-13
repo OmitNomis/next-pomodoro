@@ -113,31 +113,31 @@ export const Timer: FC = () => {
   }, [isRunning, sessionType, iterationCount]);
 
   return (
-    <div className="h-full w-full flex justify-center">
-      <div className=" mt-10 flex flex-col items-center justify-center rounded-lg p-6 sm:p-8 bg-pink-100 w-[90%] sm:max-w-[60%] md:max-w-[30%] max-h-[40%]">
+    <div className="min-h-screen flex flex-col items-center bg-gray-100">
+      <div className="bg-white rounded-lg shadow-lg w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 p-8">
         {/* Tabs */}
-        <div className="w-full  flex flex-col">
-          <div className="flex flex-wrap mb-2 sm:mb-4 md:mb-6 w-full justify-around">
-            {tabs.map((tab) => (
-              <div
-                key={tab}
-                className={`p-2 sm:p-4 md:px-8 cursor-pointer rounded-lg text-lg sm:text-xl ${
-                  currentTab === tab
-                    ? "bg-purple-300 text-white"
-                    : "bg-purple-200 hover:bg-purple-100 text-purple-900"
-                }`}
-                onClick={() => changeTab(tab)}>
-                {tab}
-              </div>
-            ))}
-          </div>
+        <div className="flex flex-wrap justify-center space-x-4 mb-6">
+          {tabs.map((tab) => (
+            <div
+              key={tab}
+              className={`p-2 sm:p-4 cursor-pointer text-lg sm:text-xl rounded-md ${
+                currentTab === tab
+                  ? "bg-purple-600 text-white"
+                  : "bg-purple-200 hover:bg-purple-300 text-purple-900"
+              }`}
+              onClick={() => changeTab(tab)}>
+              {tab}
+            </div>
+          ))}
+        </div>
 
+        <div className="flex flex-col items-center space-y-4">
           {/* Iteration number */}
-          <div className=" text-center mb-2 sm:mb-4 text-lg sm:text-xl text-gray-800">{`Iteration #${iterationCount}`}</div>
+          <div className="text-2xl sm:text-3xl text-gray-800">{`Iteration #${iterationCount}`}</div>
 
           {/* Timer */}
           <motion.div
-            className="text-4xl sm:text-6xl font-bold mb-2 sm:mb-4 md:mb-10 text-purple-600 text-center"
+            className="text-4xl sm:text-5xl font-bold text-purple-600"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}>
@@ -145,14 +145,14 @@ export const Timer: FC = () => {
           </motion.div>
 
           {/* Buttons */}
-          <div className="flex flex-wrap space-x-2 sm:space-x-4 w-full justify-center">
+          <div className="flex space-x-4">
             <button
-              className="py-2 px-4 sm:py-3 sm:px-6 rounded-full bg-purple-700 text-white text-lg sm:text-xl hover:bg-purple-600"
+              className="px-6 py-3 bg-purple-700 text-white rounded-full text-lg sm:text-xl hover:bg-purple-600"
               onClick={startStop}>
               Start/Stop
             </button>
             <button
-              className="py-2 px-4 sm:py-3 sm:px-6 rounded-full bg-purple-500 text-white text-lg sm:text-xl hover:bg-purple-400"
+              className="px-6 py-3 bg-purple-500 text-white rounded-full text-lg sm:text-xl hover:bg-purple-400"
               onClick={next}>
               Skip
             </button>
