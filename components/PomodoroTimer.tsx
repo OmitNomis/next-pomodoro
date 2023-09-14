@@ -20,7 +20,7 @@ export default function PomodoroTimer() {
   };
 
   return (
-    <>
+    <div className="flex-grow">
       <Header canReset={canReset} />
       <div className="mt-5 sm:mt-10">
         <Timer
@@ -29,6 +29,6 @@ export default function PomodoroTimer() {
           changeRunState={handleRunState}
         />
       </div>
-    </>
+    </div>
   );
 }
