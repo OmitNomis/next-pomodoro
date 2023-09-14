@@ -7,9 +7,18 @@ interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+type SettingsProps = {
+  workDuration?: string;
+  breakDuration?: string;
+  longBreakDuration?: string;
+  longBreakAfter?: string;
+};
 
 export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
-  const storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
+  const storedSettingsRaw = localStorage.getItem("settings");
+  const storedSettings: SettingsProps = storedSettingsRaw
+    ? JSON.parse(storedSettingsRaw)
+    : {};
   const [settings, setSettings] = useState({
     workDuration: storedSettings.workDuration || "",
     breakDuration: storedSettings.breakDuration || "",
