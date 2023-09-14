@@ -11,13 +11,21 @@ interface TimerProps {
   setIsRunning: (isRunning: boolean) => void;
   changeRunState: () => void;
 }
+type SettingsProps = {
+  workDuration?: string;
+  breakDuration?: string;
+  longBreakDuration?: string;
+  longBreakAfter?: string;
+};
 export const Timer: FC<TimerProps> = ({
   isRunning,
   setIsRunning,
   changeRunState,
 }) => {
-  let storedSettings = JSON.parse(localStorage.getItem("settings")) || {};
-
+  const storedSettingsRaw = localStorage.getItem("settings");
+  const storedSettings: SettingsProps = storedSettingsRaw
+    ? JSON.parse(storedSettingsRaw)
+    : {};
   const initialValues = {
     workTime: storedSettings.workDuration * 60 || 25 * 60,
     breakTime: storedSettings.breakDuration * 60 || 5 * 60,
