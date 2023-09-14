@@ -4,28 +4,21 @@ import { motion } from "framer-motion";
 import { CustomModal } from "./modal/CustomModal";
 
 type SessionTypeProp = "work" | "break" | "longBreak";
-type tabsProp = "Work" | "Break" | "Long Break";
+type tabsProp = "Work" | "Break" | "Long Break" | string;
 
 interface TimerProps {
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
   changeRunState: () => void;
 }
-type SettingsProps = {
-  workDuration?: string;
-  breakDuration?: string;
-  longBreakDuration?: string;
-  longBreakAfter?: string;
-};
+
 export const Timer: FC<TimerProps> = ({
   isRunning,
   setIsRunning,
   changeRunState,
 }) => {
   const storedSettingsRaw = localStorage.getItem("settings");
-  const storedSettings: SettingsProps = storedSettingsRaw
-    ? JSON.parse(storedSettingsRaw)
-    : {};
+  const storedSettings = storedSettingsRaw ? JSON.parse(storedSettingsRaw) : {};
   const initialValues = {
     workTime: storedSettings.workDuration * 60 || 25 * 60,
     breakTime: storedSettings.breakDuration * 60 || 5 * 60,
@@ -47,7 +40,7 @@ export const Timer: FC<TimerProps> = ({
   }, [isRunning]);
 
   const startStop = () => {
-    setIsRunning((prevState) => !prevState);
+    setIsRunning(!isRunning);
   };
 
   const isLongBreak = () => {
@@ -58,7 +51,7 @@ export const Timer: FC<TimerProps> = ({
     }
   };
 
-  const formatTime = (time) => {
+  const formatTime = (time: number) => {
     const hours = Math.floor(time / 3600)
       .toString()
       .padStart(2, "0");
