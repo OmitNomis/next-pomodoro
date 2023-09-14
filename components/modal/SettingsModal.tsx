@@ -15,7 +15,7 @@ type SettingsProps = {
 };
 
 export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
-  const storedSettingsRaw = localStorage.getItem("settings");
+  const storedSettingsRaw = window.localStorage.getItem("settings");
   const storedSettings: SettingsProps = storedSettingsRaw
     ? JSON.parse(storedSettingsRaw)
     : {};
@@ -27,7 +27,7 @@ export const SettingsModal: FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   });
 
   const handleSave = () => {
-    localStorage.setItem("settings", JSON.stringify(settings));
+    window.localStorage.setItem("settings", JSON.stringify(settings));
     window.location.href = "/";
   };
 
